@@ -8,6 +8,8 @@
   padding: 0 1rem;
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
 }
 
 .main-navigation_logo h1 {
@@ -25,6 +27,7 @@
   list-style: none;
   padding: 0;
   margin: 0;
+  align-items: center;
 }
 
 .main-navigation_item li {
