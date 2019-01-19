@@ -15,7 +15,7 @@
 .main-navigation_logo h1 {
   margin: 0;
   font-size: 1.5rem;
-  color: #f33506;
+  color: #71becc;
 }
 
 .main-navigation_item {
@@ -34,13 +34,25 @@
   margin: 0 1rem;
 }
 
-.main-navigation_item a {
+.main-navigation_item a,
+.main-navigation_item button {
   text-decoration: none;
-  color: #3bac4e;
+  color: #72bfcc;
+  padding: 0.25rem 0.5rem;
+  border: none;
+  font: inherit;
+  background: transparent;
+  cursor: pointer;
+  vertical-align: middle;
+  margin: 0;
 }
 
 .main-navigation_item a:hover,
 .main-navigation_item a:active,
-.main-navigation_item a.active {
-  color: #17da6d;
+.main-navigation_item a.active,
+.main-navigation_item button:hover,
+.main-navigation_item button:active {
+  background: #ffffff;
+  color: #72bfcc;
+  border-radius: 5px;
 }
