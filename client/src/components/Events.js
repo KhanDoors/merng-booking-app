@@ -4,11 +4,13 @@ import Modal from "./Modal/Modal";
 import Backdrop from "../components/Backdrop/Backdrop";
 import AuthContext from "../context/auth-context";
 import EventList from "../components/Events/EventList";
+import Spinner from "../components/Spinner/Spinner";
 
 class Events extends Component {
   state = {
     creating: false,
-    events: []
+    events: [],
+    isLoading: false
   };
 
   static contextType = AuthContext;
@@ -57,10 +59,7 @@ class Events extends Component {
               description
               date
               price
-              creator {
-                _id
-                email
-              }
+             
             }
           }
         `
@@ -83,7 +82,20 @@ class Events extends Component {
         return res.json();
       })
       .then(resData => {
-        this.fetchEvents();
+        this.setState(prevState => {
+          const updatedEvents = [...prevState.events];
+          updatedEvents.push({
+            _id: resData.data.createEvent._id,
+            title: resData.data.createEvent.title,
+            description: resData.data.createEvent.description,
+            date: resData.data.createEvent.date,
+            price: resData.data.createEvent.price,
+            creator: {
+              _id: this.context.userId
+            }
+          });
+          return { events: updatedEvents };
+        });
       })
       .catch(err => {
         console.log(err);
@@ -95,6 +107,7 @@ class Events extends Component {
   };
 
   fetchEvents() {
+    this.setState({ isLoading: true });
     const requestBody = {
       query: `
           query {
@@ -128,10 +141,11 @@ class Events extends Component {
       })
       .then(resData => {
         const events = resData.data.events;
-        this.setState({ events: events });
+        this.setState({ events: events, isLoading: false });
       })
       .catch(err => {
         console.log(err);
+        this.setState({ isLoading: false });
       });
   }
 
@@ -179,10 +193,14 @@ class Events extends Component {
             </button>
           </div>
         )}
-        <EventList
-          events={this.state.events}
-          authUserId={this.context.userId}
-        />
+        {this.state.isLoading ? (
+          <Spinner />
+        ) : (
+          <EventList
+            events={this.state.events}
+            authUserId={this.context.userId}
+          />
+        )}
       </Fragment>
     );
   }
